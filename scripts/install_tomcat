@@ -1,0 +1,4 @@
+#!/bin/bash
+yum clean all
+amazon-linux-extras install tomcat8.5=8.5.50
+mv /home/ec2-user/javaapp/ROOT.war /var/lib/tomcat/webapps/

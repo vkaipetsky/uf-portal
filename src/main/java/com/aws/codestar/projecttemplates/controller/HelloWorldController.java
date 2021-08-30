@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Basic Spring web service controller that handles all GET requests.
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/")
 public class HelloWorldController {
 
     private static final String MESSAGE_FORMAT = "Hello %s!";

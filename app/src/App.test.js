@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import Private from './Private';
 
 test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+  render(<Private />);
+  const linkElement = screen.getByText(/Restricted Access/i);
   expect(linkElement).toBeInTheDocument();
 });

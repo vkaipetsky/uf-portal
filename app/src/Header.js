@@ -16,9 +16,13 @@ function Header() {
     if (authState.isAuthenticated) {
         // console.log('Okta authState: ', authState);
         // console.log('oktaAuth: ', oktaAuth);
-        oktaAuth.getUser().then(user => {
+        oktaAuth.getUser().then(newUser => {
             // console.log('oktaAuth.getUser(): ', user);
-            setUser(user);
+            if (!user || (newUser.email !== user.email)) {
+                // User changed!
+                // console.log('setting user to: ', newUser);
+                setUser(newUser);
+            }
         })
     }
 

@@ -14,8 +14,8 @@ function Header() {
         : <button onClick={ login }>Sign In</button>;
 
     if (authState.isAuthenticated) {
-        // console.log('Okta authState: ', authState);
-        // console.log('oktaAuth: ', oktaAuth);
+        console.log('Okta authState: ', authState);
+        console.log('oktaAuth: ', oktaAuth);
         oktaAuth.getUser().then(newUser => {
             // console.log('oktaAuth.getUser(): ', user);
             if (!user || (newUser.email !== user.email)) {

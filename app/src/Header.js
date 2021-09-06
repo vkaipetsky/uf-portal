@@ -24,6 +24,35 @@ function Header() {
                 setUser(newUser);
             }
         })
+
+        if (window.location.hostname === "localhost") {
+            async function apiData() {
+                const apiResponse = await fetch('/api/');
+                return apiResponse.json();
+            }
+
+            apiData().then((res) => {
+                console.log('apiData response: ', res);
+            })
+
+            async function apiExtData() {
+                const apiResponse = await fetch('/api/ext/?accessToken=' + authState.accessToken.accessToken);
+                return apiResponse.json();
+            }
+
+            apiExtData().then((res) => {
+                console.log('apiExtData response: ', res);
+            })
+
+            async function apiExtProtectedData() {
+                const apiResponse = await fetch('/api/ext_protected/?accessToken=' + authState.accessToken.accessToken);
+                return apiResponse.json();
+            }
+
+            apiExtProtectedData().then((res) => {
+                console.log('apiExtData response: ', res);
+            })
+        }
     }
 
     return (

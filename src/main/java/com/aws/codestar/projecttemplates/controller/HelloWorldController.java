@@ -35,7 +35,8 @@ public class HelloWorldController {
     public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken) {
         WebClient client = WebClient.create();
         String response = client.get()
-              .uri("http://localhost:8081/")
+//              .uri("http://localhost:8081/")
+              .uri("https://api.unicorn-finance-protected.com/")
               .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
               .exchange()
               .block()
@@ -49,7 +50,8 @@ public class HelloWorldController {
     public ResponseEntity externalProtectedAPIGetAuthenticated(@RequestParam String accessToken) {
         WebClient client = WebClient.create();
         String response = client.get()
-                .uri("http://localhost:8081/restricted")
+//                .uri("http://localhost:8081/restricted")
+                .uri("https://api.unicorn-finance-protected.com/restricted")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .exchange()
                 .block()

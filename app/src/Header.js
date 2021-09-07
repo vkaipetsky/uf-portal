@@ -25,7 +25,10 @@ function Header() {
             }
         })
 
-        if (window.location.hostname === "localhost") {
+        // const queryTheAPI = window.location.hostname === "localhost";
+        const queryTheAPI = true; // TODO: need to setup simple switching between local/remote API testing
+        if (queryTheAPI)
+        {
             async function apiData() {
                 const apiResponse = await fetch('/api/');
                 return apiResponse.json();

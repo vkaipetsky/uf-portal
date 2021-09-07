@@ -50,7 +50,7 @@ function Header() {
             }
 
             apiExtProtectedData().then((res) => {
-                console.log('apiExtData response: ', res);
+                console.log('apiExtProtectedData response: ', res);
             })
         }
     }

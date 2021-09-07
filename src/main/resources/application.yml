@@ -10,3 +10,7 @@ spring:
         provider:
           okta:
             issuer-uri: ${OKTA_ISSUER_URI}
+okta:
+  client:
+    orgUrl: ${OKTA_ORG_URL}
+    token: ${OKTA_TOKEN}

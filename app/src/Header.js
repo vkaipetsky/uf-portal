@@ -25,10 +25,32 @@ function Header() {
             }
         })
 
-        // const queryTheAPI = window.location.hostname === "localhost";
-        const queryTheAPI = true; // TODO: need to setup simple switching between local/remote API testing
-        if (queryTheAPI)
-        {
+        const queryGlobalAPIFromReact = false;
+        if (queryGlobalAPIFromReact) {
+            async function apiDataGlobalCORS() {
+                const apiResponse = await fetch('https://api.unicorn-finance-protected.com/');
+                return apiResponse.json();
+            }
+
+            apiDataGlobalCORS().then((res) => {
+                console.log('apiDataGlobalCORS response: ', res);
+            })
+
+            async function apiDataGlobalRestrictedCORS() {
+                const apiResponse = await fetch(
+                    'https://api.unicorn-finance-protected.com/restricted',
+                    {headers: {'Authorization': 'Bearer ' + authState.accessToken.accessToken}}
+                );
+                return apiResponse.json();
+            }
+
+            apiDataGlobalRestrictedCORS().then((res) => {
+                console.log('apiDataGlobalRestrictedCORS response: ', res);
+            })
+        }
+
+        const queryGlobalAPI = true;
+        if (queryGlobalAPI) {
             async function apiData() {
                 const apiResponse = await fetch('/api/');
                 return apiResponse.json();
@@ -55,6 +77,39 @@ function Header() {
             apiExtProtectedData().then((res) => {
                 console.log('apiExtProtectedData response: ', res);
             })
+        }
+        
+        const queryTheLocalAPI = window.location.hostname === "localhost";
+        // const queryTheAPI = true; // TODO: need to setup simple switching between local/remote API testing
+        if (queryTheLocalAPI)
+        {
+            async function apiDataLocal8081() {
+                const apiResponse = await fetch('http://localhost:8081/');
+                return apiResponse.json();
+            }
+
+            apiDataLocal8081().then((res) => {
+                console.log('apiDataLocal8081 response: ', res);
+            })
+
+            async function apiDataLocalAuthorized8081() {
+                const apiResponse = await fetch('http://localhost:8081/', {headers: {'Authorization': 'Bearer ' + authState.accessToken.accessToken}});
+                return apiResponse.json();
+            }
+
+            apiDataLocalAuthorized8081().then((res) => {
+                console.log('apiDataLocalAuthorized8081 response: ', res);
+            })
+
+            async function apiDataLocalRestricted8081() {
+                const apiResponse = await fetch('http://localhost:8081/restricted', {headers: {'Authorization': 'Bearer ' + authState.accessToken.accessToken}});
+                return apiResponse.json();
+            }
+
+            apiDataLocalRestricted8081().then((res) => {
+                console.log('apiDataLocalRestricted8081 response: ', res);
+            })
+
         }
     }
 

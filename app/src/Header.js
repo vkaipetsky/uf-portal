@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
+import logo from './assets/logo.svg';
 
 function Header() {
+
     const { oktaAuth, authState } = useOktaAuth();
     const [ user, setUser ] = useState(null);
 
     const login = async () => { await oktaAuth.signInWithRedirect(); }
     const logout = async () => { await oktaAuth.signOut(); }
 
+    const LoginButton = ({onClick, children}) => {
+        return <button onClick={onClick} class="bg-blue-500 font-roboto font-light text-sm shadow-sm hover:bg-blue-400 hover:shadow-lg rounded-full px-4 py-2 text-white uppercase">{children}</button>
+    };
+
     const userText = authState.isAuthenticated
-        ? <button onClick={ logout }>Logout</button>
-        : <button onClick={ login }>Sign In</button>;
+        ? <LoginButton onClick={logout}>Logout</LoginButton>
+        : <LoginButton onClick={login}>Login</LoginButton>
 
     if (authState.isAuthenticated) {
         console.log('Okta authState: ', authState);
@@ -55,19 +61,23 @@ function Header() {
         })
     }
 
+    const HeaderLink = ({to, children}) => {
+        return <Link to={to} class="text-gray-500 font-roboto hover:text-gray-700">{children}</Link>
+    };
+
     return (
-        <header>
-            <div>Unicorn Finance Dev Portal</div>
+        <header class="py-8 bg-white flex flex-row items-center justify-center relative">
+            <Link to="/" class="absolute left-24"><img src={logo} alt="JP Morgan chase logo" /></Link>
             <ul className="menu">
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/private">Restricted</Link></li>
+                <li><HeaderLink to="/">Home</HeaderLink></li>
+                <li><HeaderLink to="/private">Restricted</HeaderLink></li>
             </ul>
             {user && (
                 <div>
                     Logged in as "{user.name}", email: {user.email}
                 </div>
             )}
-            {userText}
+            <div class="absolute right-24">{userText}</div>
         </header>
     );
 }

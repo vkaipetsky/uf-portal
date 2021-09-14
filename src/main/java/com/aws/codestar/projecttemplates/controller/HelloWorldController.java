@@ -32,11 +32,12 @@ public class HelloWorldController {
     }
 
     @RequestMapping(path = "ext/", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken) {
+    public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
         WebClient client = WebClient.create();
         String response = client.get()
 //              .uri("http://localhost:8081/")
-              .uri("https://api.unicorn-finance-protected.com/")
+//              .uri("https://api.unicorn-finance-protected.com/")
+                .uri(remoteApiUrlForEnvironment(runtimeHostname))
               .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
               .exchange()
               .block()
@@ -47,11 +48,12 @@ public class HelloWorldController {
     }
 
     @RequestMapping(path = "ext_protected/", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity externalProtectedAPIGetAuthenticated(@RequestParam String accessToken) {
+    public ResponseEntity externalProtectedAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
         WebClient client = WebClient.create();
         String response = client.get()
 //                .uri("http://localhost:8081/restricted")
-                .uri("https://api.unicorn-finance-protected.com/restricted")
+//                .uri("https://api.unicorn-finance-protected.com/restricted")
+                .uri(remoteApiUrlForEnvironment(runtimeHostname) + "/restricted")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .exchange()
                 .block()
@@ -59,6 +61,15 @@ public class HelloWorldController {
                 .block();
 
         return ResponseEntity.ok(createResponse(response));
+    }
+
+    private String remoteApiUrlForEnvironment(String runtimeHostname) {
+        String remoteApiUrl = "internal-uf-oauth2-internal-LB-1093192754.eu-west-1.elb.amazonaws.com"; // this is only reachable from inside the AWS VPC
+        if (runtimeHostname.equals("localhost")) {
+            remoteApiUrl = "http://localhost:8081";
+        }
+
+        return remoteApiUrl;
     }
 
     private String createResponse(String name) {

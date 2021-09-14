@@ -12,7 +12,7 @@ function Header() {
     const logout = async () => { await oktaAuth.signOut(); }
 
     const LoginButton = ({onClick, children}) => {
-        return <button onClick={onClick} class="bg-blue-500 hover:bg-blue-400 rounded-full px-3 py-1 text-white uppercase">{children}</button>
+        return <button onClick={onClick} class="bg-blue-500 font-roboto font-light text-sm shadow-sm hover:bg-blue-400 hover:shadow-lg rounded-full px-4 py-2 text-white uppercase">{children}</button>
     };
 
     const userText = authState.isAuthenticated
@@ -120,7 +120,7 @@ function Header() {
     }
 
     const HeaderLink = ({to, children}) => {
-        return <Link to={to} class="text-gray-500 hover:text-gray-700">{children}</Link>
+        return <Link to={to} class="text-gray-500 font-roboto hover:text-gray-700">{children}</Link>
     };
 
     return (

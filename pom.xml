@@ -17,7 +17,7 @@
         <junit.platform.version>1.2.0</junit.platform.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-        <node.version>v10.14.2</node.version>
+        <node.version>v12.13.0</node.version>
         <yarn.version>v1.12.1</yarn.version>
     </properties>
 

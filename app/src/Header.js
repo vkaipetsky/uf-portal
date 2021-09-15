@@ -12,7 +12,7 @@ function Header() {
     const logout = async () => { await oktaAuth.signOut(); }
 
     const LoginButton = ({onClick, children}) => {
-        return <button onClick={onClick} class="bg-blue-500 font-roboto font-light text-sm shadow-sm hover:bg-blue-400 hover:shadow-lg rounded-full px-4 py-2 text-white uppercase">{children}</button>
+        return <button onClick={onClick} class="bg-blue-500 tracking-widest font-roboto font-light text-xs shadow-sm hover:bg-blue-400 hover:shadow-lg rounded-full px-4 py-2 text-white uppercase">{children}</button>
     };
 
     const userText = authState.isAuthenticated
@@ -99,12 +99,12 @@ function Header() {
     }
 
     const HeaderLink = ({to, children}) => {
-        return <Link to={to} class="text-gray-500 font-roboto hover:text-gray-700">{children}</Link>
+        return <Link to={to} class="text-gray-500 font-roboto hover:text-gray-700 tracking-wider">{children}</Link>
     };
 
     return (
-        <header class="py-8 bg-white flex flex-row items-center justify-center relative">
-            <Link to="/" class="absolute left-24"><img src={logo} alt="JP Morgan chase logo" /></Link>
+        <nav class="py-8 flex flex-row items-center justify-center fixed w-screen top-0 bg-inherit z-10" style={{backdropFilter: 'blur(1px)'}}>
+            <Link to="/" class="absolute left-24 w-72"><img src={logo} alt="JP Morgan chase logo" /></Link>
             <ul className="menu">
                 <li><HeaderLink to="/">Home</HeaderLink></li>
                 <li><HeaderLink to="/private">Restricted</HeaderLink></li>
@@ -115,7 +115,7 @@ function Header() {
                 </div>
             )}
             <div class="absolute right-24">{userText}</div>
-        </header>
+        </nav>
     );
 }
 

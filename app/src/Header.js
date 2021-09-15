@@ -59,6 +59,16 @@ function Header() {
         apiExtProtectedData().then((res) => {
             console.log('apiExtProtectedData response: ', res);
         })
+
+        async function apiGatewayQuery() {
+            const apiResponse = await fetch('/api/test_api_gw/?accessToken=' + authState.accessToken.accessToken);
+            return apiResponse.json();
+        }
+
+        apiGatewayQuery().then((res) => {
+            console.log('apiGatewayQuery response: ', res);
+        })
+
     }
 
     const HeaderLink = ({to, children}) => {

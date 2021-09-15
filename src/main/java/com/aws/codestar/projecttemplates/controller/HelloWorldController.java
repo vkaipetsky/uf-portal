@@ -34,15 +34,20 @@ public class HelloWorldController {
     @RequestMapping(path = "test_api_gw/", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity testApiGatewayAuthenticated(@RequestParam String accessToken) {
         WebClient client = WebClient.create();
+        String remoteApiUrl = "https://tntr978g25.execute-api.us-west-2.amazonaws.com/api/duckssay";
         String response = client.get()
-                .uri("https://tntr978g25.execute-api.us-west-2.amazonaws.com/api/duckssay")
+                .uri(remoteApiUrl)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .exchange()
                 .block()
                 .bodyToMono(String.class)
                 .block();
 
-        return ResponseEntity.ok(response);
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put( "remoteApiUrlQueried", remoteApiUrl );
+        jsonResponse.put( "responseReceived", response );
+
+        return ResponseEntity.ok(jsonResponse.toString());
     }
 
     @RequestMapping(path = "ext/", method = RequestMethod.GET, produces = "application/json")

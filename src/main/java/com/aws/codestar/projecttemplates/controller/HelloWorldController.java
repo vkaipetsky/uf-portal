@@ -48,33 +48,37 @@ public class HelloWorldController {
     @RequestMapping(path = "ext/", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
         WebClient client = WebClient.create();
+        String remoteApiUrl = remoteApiUrlForEnvironment(runtimeHostname);
         String response = client.get()
-//              .uri("http://localhost:8081/")
-//              .uri("https://api.unicorn-finance-protected.com/")
-                .uri(remoteApiUrlForEnvironment(runtimeHostname))
+              .uri(remoteApiUrl)
               .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
               .exchange()
               .block()
               .bodyToMono(String.class)
               .block();
 
-        return ResponseEntity.ok(response);
+        JSONObject jsonResponse = new JSONObject(response);
+        jsonResponse.put( "remoteApiUrl", remoteApiUrl );
+
+        return ResponseEntity.ok(jsonResponse.toString());
     }
 
     @RequestMapping(path = "ext_protected/", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity externalProtectedAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
         WebClient client = WebClient.create();
+        String remoteApiUrl = remoteApiUrlForEnvironment(runtimeHostname) + "/restricted";
         String response = client.get()
-//                .uri("http://localhost:8081/restricted")
-//                .uri("https://api.unicorn-finance-protected.com/restricted")
-                .uri(remoteApiUrlForEnvironment(runtimeHostname) + "/restricted")
+                .uri(remoteApiUrl)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .exchange()
                 .block()
                 .bodyToMono(String.class)
                 .block();
 
-        return ResponseEntity.ok(response);
+        JSONObject jsonResponse = new JSONObject(response);
+        jsonResponse.put( "remoteApiUrl", remoteApiUrl );
+
+        return ResponseEntity.ok(jsonResponse.toString());
     }
 
     private String remoteApiUrlForEnvironment(String runtimeHostname) {

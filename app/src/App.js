@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
 import Header from './Header';
+import Footer from './Footer'
 import Home from './Home';
 import Private from './Private';
 import { LoginCallback, SecureRoute, Security } from '@okta/okta-react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
+import PageNotFound from './PageNotFound';
 
 const oktaAuth = new OktaAuth({
     issuer: 'https://dev-79177292.okta.com/oauth2/default',
@@ -20,15 +22,20 @@ const App = () => {
     };
 
     return (
-      <div className="App">
-        <div className="page">
-          <div className="content">
+      <div className="App" class="overflow-x-hidden min-h-screen">
+        <div>
+          <div class="min-h-screen relative">
             <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
               <Header/>
-              <Route path='/' exact={true} component={Home}/>
-              <SecureRoute path='/private' exact={true} component={Private}/>
+              <Switch>
+              <Route exact path='/' component={Home}/>
+              <Route exact path='/test' component={Private} />
+              <SecureRoute exact path='/private' component={Private}/>
               <Route path='/callback' component={LoginCallback}/>
               <Route path='/home' component={Home}/>
+              <Route component={PageNotFound} />
+              </Switch>
+              <Footer />
             </Security>
           </div>
         </div>

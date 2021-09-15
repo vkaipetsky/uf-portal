@@ -96,6 +96,15 @@ function Header() {
             console.log('apiGatewayIrelandProtectedQuery response: ', res);
         })
 
+        async function apiGatewayIrelandAdminQuery() {
+            const apiResponse = await fetch('/api/test_api_gw_ireland_admin/?accessToken=' + authState.accessToken.accessToken);
+            return apiResponse.json();
+        }
+
+        apiGatewayIrelandAdminQuery().then((res) => {
+            console.log('apiGatewayIrelandAdminQuery response: ', res);
+        })
+
     }
 
     const HeaderLink = ({to, children}) => {

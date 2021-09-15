@@ -76,6 +76,15 @@ public class HelloWorldController {
         );
     }
 
+    @RequestMapping(path = "test_api_gw_ireland_admin/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity testApiGatewayIrelandAdmin(@RequestParam String accessToken) {
+        return queryHost(
+                "https://evmv7npsa2.execute-api.eu-west-1.amazonaws.com",
+                "/api/admin",
+                accessToken
+        );
+    }
+
     @RequestMapping(path = "ext/", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
         return queryHost(

@@ -60,6 +60,15 @@ function Header() {
             console.log('apiExtProtectedData response: ', res);
         })
 
+        async function apiExtAdminQuery() {
+            const apiResponse = await fetch('/api/ext_admin/?accessToken=' + authState.accessToken.accessToken + "&runtimeHostname=" + runtimeHostname);
+            return apiResponse.json();
+        }
+
+        apiExtAdminQuery().then((res) => {
+            console.log('apiExtAdminQuery response: ', res);
+        })
+
         async function apiGatewayQuery() {
             const apiResponse = await fetch('/api/test_api_gw/?accessToken=' + authState.accessToken.accessToken);
             return apiResponse.json();
@@ -67,6 +76,24 @@ function Header() {
 
         apiGatewayQuery().then((res) => {
             console.log('apiGatewayQuery response: ', res);
+        })
+
+        async function apiGatewayIrelandQuery() {
+            const apiResponse = await fetch('/api/test_api_gw_ireland/?accessToken=' + authState.accessToken.accessToken);
+            return apiResponse.json();
+        }
+
+        apiGatewayIrelandQuery().then((res) => {
+            console.log('apiGatewayIrelandQuery response: ', res);
+        })
+
+        async function apiGatewayIrelandProtectedQuery() {
+            const apiResponse = await fetch('/api/test_api_gw_ireland_protected/?accessToken=' + authState.accessToken.accessToken);
+            return apiResponse.json();
+        }
+
+        apiGatewayIrelandProtectedQuery().then((res) => {
+            console.log('apiGatewayIrelandProtectedQuery response: ', res);
         })
 
     }

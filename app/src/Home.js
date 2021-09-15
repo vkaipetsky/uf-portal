@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import inSyncImage from './assets/undraw_In_sync.svg';
-import undrawDev from './assets/undraw_dev.svg';
-import undrawVault from './assets/undraw_vault.svg';
 import undrawTeam from './assets/undraw_team.svg';
 import Fade from 'react-reveal/Fade';
-import HeadShake from 'react-reveal/HeadShake';
 
 function Home() {
 

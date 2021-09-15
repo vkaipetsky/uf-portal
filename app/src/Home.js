@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import inSyncImage from './assets/undraw_In_sync.svg';
 import undrawTeam from './assets/undraw_team.svg';
+import lockOpen from './assets/lock-open.svg';
+import lockClosed from './assets/lock-closed.svg';
 import Fade from 'react-reveal/Fade';
 
 function Home() {
@@ -30,13 +32,20 @@ function Home() {
                 <div class="flex flex-col">
                     <div class="flex flex-row mx-48 justify-center items-center my-24">
                         <HomeCard to="/private">Visit a sample Restricted Page</HomeCard>
-                        <p class="font-roboto text-gray-600 font-medium text-xl ml-4">
+                        <p class="font-roboto text-gray-600 font-medium text-xl ml-24">
                             This website uses <a href="https://www.okta.com/" class="transition duration-150 tracking-wide text-blue-500 font-bold hover:text-blue-400">OKTA </a>
                             for authentication.
                             <br /><br />
-                            <span class="text-gray-500 font-light text-md">
-                            Authenticated users will be able to access restricted content. <br/>
-                            Unauthenticated users will be redirected to the <b class="tracking-wide text-blue-500 font-bold">OKTA login portal </b>
+                            <span class="text-gray-500 font-light text-md flex flex-col">
+                                <span class="flex flex-row">
+                                    <img src={lockOpen} class="w-5 mr-4" alt="an open lock" />
+                                    Authenticated users will be able to access restricted content.
+                                </span>
+
+                                <span class="flex flex-row mt-2">
+                                    <img src={lockClosed} class="w-5 mr-4" alt="a closed lock" />
+                                    Unauthenticated users will be redirected to the<b class="tracking-wide text-blue-500 font-bold ml-1">OKTA login portal </b>
+                                </span>
                             </span></p>
                     </div>
                     <div class="flex flex-row mx-48 justify-center items-center">

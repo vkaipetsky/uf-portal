@@ -104,10 +104,10 @@ public class HelloWorldController {
     }
 
     private String remoteApiUrlForEnvironment(String runtimeHostname) {
-        String remoteApiUrl = "internal-uf-oauth2-internal-LB-1093192754.eu-west-1.elb.amazonaws.com"; // this is only reachable from inside the AWS VPC
+        String remoteApiUrl = "internal-uf-behind-apigw-lb-680393014.eu-west-1.elb.amazonaws.com"; // this is only reachable from inside the AWS VPC
         if (runtimeHostname.equals("localhost")) {
-//            remoteApiUrl = "http://localhost:8081";
-            remoteApiUrl = "http://54.247.156.88";
+//            remoteApiUrl = "http://localhost:8081"; // OAuth2 app running locally
+            remoteApiUrl = "http://54.247.156.88"; // Directly to the remote server
         }
 
         return remoteApiUrl;

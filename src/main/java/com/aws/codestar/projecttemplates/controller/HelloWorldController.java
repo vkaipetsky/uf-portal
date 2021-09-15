@@ -31,6 +31,20 @@ public class HelloWorldController {
         return ResponseEntity.ok(createResponse(name));
     }
 
+    @RequestMapping(path = "test_api_gw/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity testApiGatewayAuthenticated(@RequestParam String accessToken) {
+        WebClient client = WebClient.create();
+        String response = client.get()
+                .uri("https://tntr978g25.execute-api.us-west-2.amazonaws.com/api/duckssay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .exchange()
+                .block()
+                .bodyToMono(String.class)
+                .block();
+
+        return ResponseEntity.ok(response);
+    }
+
     @RequestMapping(path = "ext/", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
         WebClient client = WebClient.create();
@@ -44,7 +58,7 @@ public class HelloWorldController {
               .bodyToMono(String.class)
               .block();
 
-        return ResponseEntity.ok(createResponse(response));
+        return ResponseEntity.ok(response);
     }
 
     @RequestMapping(path = "ext_protected/", method = RequestMethod.GET, produces = "application/json")
@@ -60,7 +74,7 @@ public class HelloWorldController {
                 .bodyToMono(String.class)
                 .block();
 
-        return ResponseEntity.ok(createResponse(response));
+        return ResponseEntity.ok(response);
     }
 
     private String remoteApiUrlForEnvironment(String runtimeHostname) {

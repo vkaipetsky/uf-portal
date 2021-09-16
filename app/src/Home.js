@@ -44,7 +44,7 @@ function Home() {
 
                                 <span class="flex flex-row mt-2">
                                     <img src={lockClosed} class="w-5 mr-4" alt="a closed lock" />
-                                    Unauthenticated users will be redirected to the<b class="tracking-wide text-blue-500 font-bold ml-1">OKTA login portal </b>
+                                    Unauthenticated users will be redirected to the<strong class="tracking-wide text-blue-500 font-bold ml-1">OKTA login portal </strong>
                                 </span>
                             </span></p>
                     </div>

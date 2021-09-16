@@ -12,11 +12,15 @@ function Header() {
     const logout = async () => { await oktaAuth.signOut(); }
 
     const LoginButton = ({onClick, children}) => {
-        return <button onClick={onClick} class="bg-blue-500 tracking-widest font-roboto font-light text-xs shadow-sm hover:bg-blue-400 hover:shadow-lg rounded-full px-4 py-2 text-white uppercase">{children}</button>
+        return <button onClick={onClick} class="bg-blue-500 h-8 tracking-widest font-roboto font-light text-xs shadow-sm hover:bg-blue-400 hover:shadow-lg rounded-full px-4 py-2 text-white uppercase">{children}</button>
+    };
+
+    const LogoutButton = ({onClick, children}) => {
+        return <button onClick={onClick} class="h-8 tracking-widest font-roboto font-light text-xs hover:text-gray-400 rounded-full mx-4 text-gray-700 uppercase">{children}</button>
     };
 
     const userText = authState.isAuthenticated
-        ? <LoginButton onClick={logout}>Logout</LoginButton>
+        ? <LogoutButton onClick={logout}>Logout</LogoutButton>
         : <LoginButton onClick={login}>Login</LoginButton>
 
     if (authState.isAuthenticated) {
@@ -123,19 +127,38 @@ function Header() {
         return <Link to={to} class="text-gray-500 font-roboto hover:text-gray-700 tracking-wider">{children}</Link>
     };
 
+    const getUserInitials = () => {
+            const splitName = user.name.split(' ');
+            return `${splitName[0][0]}${splitName[1][0]}`;
+    }
+
+    const Avatar = () => {
+        return (
+            <div class="rounded-full h-12 w-12 mr-2 tracking-wider items-center justify-center flex bg-blue-500 shadow-sm hover:bg-blue-400 cursor-pointer text-white font-roboto font-light">
+                {
+                    getUserInitials()
+                }
+            </div>
+        );
+    }
+
     return (
         <nav class="py-8 flex flex-row items-center justify-center fixed w-screen top-0 bg-inherit z-10" style={{backdropFilter: 'blur(1px)'}}>
             <Link to="/" class="absolute left-24 w-72"><img src={logo} alt="JP Morgan chase logo" /></Link>
             <ul className="menu">
                 <li><HeaderLink to="/">Home</HeaderLink></li>
                 <li><HeaderLink to="/private">Restricted</HeaderLink></li>
+                <li><HeaderLink to="/developer">Developer</HeaderLink></li>
             </ul>
-            {user && (
-                <div>
-                    Logged in as "{user.name}", email: {user.email}
-                </div>
-            )}
-            <div class="absolute right-24">{userText}</div>
+            
+            <div class="absolute right-24 flex items-center">
+                {
+                    user && <Avatar />
+                }
+                {
+                userText
+                }
+            </div>
         </nav>
     );
 }

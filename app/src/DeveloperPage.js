@@ -13,6 +13,7 @@ const DeveloperPage = () => {
     const [showCopyMessage, setShowCopyMessage] = useState(false);
     const [showDeleteWarning, setShowDeleteWarning] = useState(false);
     const [selectedApiKey, setSelectedApiKey] = useState('');
+    const [someKeysGotDeleted, setSomeKeysGotDeleted] = useState(false);
 
     async function apiAppsData() {
         const apiResponse = await fetch('/okta_apps');
@@ -39,12 +40,12 @@ const DeveloperPage = () => {
             })
         },
         // Dependencies
-        []
+        [someKeysGotDeleted]
     );
 
     const ApiKeyEntry = ({ apiKey }) => {
         const updateSelectedAndShowDelete = () => {
-            setSelectedApiKey(apiKey.key)
+            setSelectedApiKey(apiKey.id);
             setShowDeleteWarning(true);
         };
 
@@ -79,10 +80,21 @@ const DeveloperPage = () => {
     }
 
     const handleDeleteKey = (key) => {
-        const newApiKeys = Object.assign({}, apiKeys);
-        delete newApiKeys[key];
-        setShowDeleteWarning(false);
-        setApiKeys(newApiKeys);
+
+        async function deleteKey() {
+            // TODO: Use the actual token here
+            const urlToDelete = '/clients/delete?accessToken=123&appIdToDelete='+key;
+            console.log('handleDeleteKey calling: ' + urlToDelete)
+            const apiResponse = await fetch(urlToDelete);
+            return apiResponse.json();
+        }
+
+        deleteKey().then((res) => {
+            console.log('deleteKey response: ', res);
+
+            setSomeKeysGotDeleted(true);
+            setShowDeleteWarning(false);
+        })
     }
 
     const handleDisplayCopyMessage = () => {

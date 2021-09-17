@@ -45,6 +45,13 @@ public class AdminController {
         return oktaClient.listApplications();
     }
 
+    @RequestMapping(path = "/clients/delete", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity deleteApp(@RequestParam String accessToken, @RequestParam String appIdToDelete) {
+        String report = "deleteApp got called for id: " + appIdToDelete;
+        System.out.println(report);
+        return ResponseEntity.ok("{\"appIdToDelete\":\""+appIdToDelete+"\", \"result\":\"deleted\"}");
+    }
+
     @RequestMapping(path = "/clients/create", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity createUser(@RequestParam String accessToken, @RequestParam String clientName) {
         // Create a new Okta client, assign it to the group(s) of the user which is requesting this

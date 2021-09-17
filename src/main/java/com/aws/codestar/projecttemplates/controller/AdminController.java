@@ -1,6 +1,7 @@
 package com.aws.codestar.projecttemplates.controller;
 
 import com.okta.sdk.client.Client;
+import com.okta.sdk.resource.application.ApplicationList;
 import com.okta.sdk.resource.user.UserList;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +38,11 @@ public class AdminController {
     public class UnicornUser {
         public String clientId;
         public String clientSecret;
+    }
+
+    @GetMapping("/okta_apps")
+    public ApplicationList getKeys() {
+        return oktaClient.listApplications();
     }
 
     @RequestMapping(path = "/clients/create", method = RequestMethod.POST, produces = "application/json")

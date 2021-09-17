@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReactComponent as TrashIcon } from './assets/trash.svg';
 import { ReactComponent as PlusIcon } from './assets/plus.svg';
 import { ReactComponent as MinusIcon } from './assets/minus.svg';
@@ -14,6 +14,34 @@ const DeveloperPage = () => {
     const [showDeleteWarning, setShowDeleteWarning] = useState(false);
     const [selectedApiKey, setSelectedApiKey] = useState('');
 
+    async function apiAppsData() {
+        const apiResponse = await fetch('/okta_apps');
+        return apiResponse.json();
+    }
+
+    // When this component first mounts, this will get called
+    useEffect(() =>
+        {
+            apiAppsData().then((res) => {
+                console.log('apiAppsData response: ', res);
+                console.log('response.currentPage.items: ', res.currentPage.items);
+
+                // Create the new keys object
+                let newKeys = {};
+                for (const appIndex in res.currentPage.items) {
+                    let curApp = res.currentPage.items[appIndex];
+
+                    newKeys[curApp.id] = curApp;
+                }
+
+                // Update the keys
+                setApiKeys(newKeys);
+            })
+        },
+        // Dependencies
+        []
+    );
+
     const ApiKeyEntry = ({ apiKey }) => {
         const updateSelectedAndShowDelete = () => {
             setSelectedApiKey(apiKey.key)
@@ -24,8 +52,8 @@ const DeveloperPage = () => {
             <li class="flex flex-row my-1 hover:bg-gray-200 px-2 py-4 text-gray-700 rounded-md font-roboto cursor-pointer">
                 <CopyToClipboard text={apiKey.key} onCopy={() => handleDisplayCopyMessage()}>
                     <div class="flex flex-row flex-1">
-                        <span class="flex-1">{apiKey.name}</span>
-                        <span class="flex-1">{apiKey.key}</span>
+                        <span class="flex-1">{apiKey.label}</span>
+                        <span class="flex-1">{apiKey.id}</span>
                     </div>
                 </CopyToClipboard>
                 <button onClick={() => updateSelectedAndShowDelete()} class="text-gray-600 hover:text-red-500"><TrashIcon /></button>
@@ -88,7 +116,6 @@ const DeveloperPage = () => {
         <div class="flex flex-col items-center w-screen min-h-screen">
             <div class="h-full w-full mt-24 p-24">
                 <h1 class="font-roboto font-black text-6xl text-gray-800">Developer</h1>
-                <UndrawDev class="w-1/4 h-1/4 absolute bottom-24 right-24 mb-4" />
 
                 <div class="relative">
                     <div class="p-4 flex flex-col bg-gray-100 rounded-md mt-12 w-1/2 shadow-sm relative z-10">
@@ -109,6 +136,8 @@ const DeveloperPage = () => {
                         <button onClick={() => handleGenerateKey()} class="font-roboto text-white font-light bg-blue-500 hover:bg-blue-400 rounded-md px-2 py-1 h-8 text-sm tracking-wide">Generate Key</button>
                     </div>
                 </div>
+
+                <UndrawDev class="w-1/4 h-1/4 absolute bottom-24 right-24 mb-4" />
             </div>
         </div>
     );

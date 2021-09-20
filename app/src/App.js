@@ -4,6 +4,7 @@ import Header from './Header';
 import Footer from './Footer'
 import Home from './Home';
 import DeveloperPage from './DeveloperPage';
+import UserManagementPage from './UserManagementPage';
 import Private from './Private';
 import { LoginCallback, SecureRoute, Security } from '@okta/okta-react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
@@ -32,6 +33,7 @@ const App = () => {
               <Route exact path='/' component={Home}/>
               <SecureRoute exact path='/developer' component={DeveloperPage} />
               <SecureRoute exact path='/private' component={Private}/>
+                <Route path='/usermanagement' component={UserManagementPage} />
               <Route path='/callback' component={LoginCallback}/>
               <Route path='/home' component={Home}/>
               <Route component={PageNotFound} />

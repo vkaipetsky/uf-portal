@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import inSyncImage from './assets/undraw_In_sync.svg';
 import undrawTeam from './assets/undraw_team.svg';
-import lockOpen from './assets/lock-open.svg';
-import lockClosed from './assets/lock-closed.svg';
+import { ReactComponent as LockOpen } from './assets/lock-open.svg';
+import { ReactComponent as LockClosed } from './assets/lock-closed.svg';
 import Fade from 'react-reveal/Fade';
 
 function Home() {
@@ -12,7 +12,7 @@ function Home() {
         return <h1 class="text-8xl font-roboto text-left text-gray-800 m-12 font-black">{children}</h1>
     }
 
-    const HomeCard = ({ to, color, children, right}) => {
+    const HomeCard = ({ to, color, children, right }) => {
         return (
             <Link to={to}
                 class={`transition duration-500 ${right ? 'text-right' : 'text-left'} rounded-lg m-1 p-24 w-1/3 ${color ? color : 'bg-blue-500'} text-white font-bold text-4xl shadow-md hover:shadow-xl hover:opacity-80`}>
@@ -38,12 +38,12 @@ function Home() {
                             <br /><br />
                             <span class="text-gray-500 font-light text-md flex flex-col">
                                 <span class="flex flex-row">
-                                    <img src={lockOpen} class="w-5 mr-4" alt="an open lock" />
+                                    <LockOpen class="w-5 mr-4 text-blue-500" alt="an open lock" />
                                     Authenticated users will be able to access restricted content.
                                 </span>
 
                                 <span class="flex flex-row mt-2">
-                                    <img src={lockClosed} class="w-5 mr-4" alt="a closed lock" />
+                                    <LockClosed class="w-5 mr-4 text-blue-500" alt="a closed lock" />
                                     Unauthenticated users will be redirected to the<strong class="tracking-wide text-blue-500 font-bold ml-1">OKTA login portal </strong>
                                 </span>
                             </span></p>

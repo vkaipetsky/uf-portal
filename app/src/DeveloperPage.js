@@ -35,7 +35,7 @@ const DeveloperPage = () => {
 
     const AddApiKeyButton = () => {
         return (
-            <button onClick={() => setShowKeyGenerator(!showKeyGenerator)} class="absolute -bottom-6 -right-4 rounded-full w-12 h-12 bg-blue-500 hover:bg-blue-400 flex justify-center items-center text-white">
+            <button onClick={() => setShowKeyGenerator(!showKeyGenerator)} class="absolute -bottom-6 -right-4 rounded-full w-12 h-12 bg-blue-500 hover:bg-blue-400 flex justify-center items-center text-white shadow-md">
                 {
                     showKeyGenerator ? <MinusIcon /> : <PlusIcon />
                 }
@@ -91,7 +91,7 @@ const DeveloperPage = () => {
                 <UndrawDev class="w-1/4 h-1/4 absolute bottom-24 right-24 mb-4" />
 
                 <div class="relative">
-                    <div class="p-4 flex flex-col bg-gray-100 rounded-md mt-12 w-1/2 shadow-sm relative z-10">
+                    <div class="p-4 flex flex-col bg-gray-100 rounded-md mt-12 w-1/2 shadow-md relative z-10">
                         <DeleteConfirmationDialog />
                         <h2 class="font-roboto text-xl font-medium text-gray-800">My API Keys</h2>
                         <KeyCopiedMessage />
@@ -105,8 +105,8 @@ const DeveloperPage = () => {
                     </div>
                     <div class={`absolute items-center transform transition animated opacity-0 duration-500 ${showKeyGenerator && 'translate-y-20 opacity-100'} bottom-4 w-2/5 flex flex-row p-2`}>
                         <label for="key-title-input" class="mr-2 font-roboto text-gray-600 font-light">Key title</label>
-                        <input onChange={(e) => setGeneratorKeyTitle(e.target.value)} id="key-title-input" class="bg-gray-100 flex-1 mr-2 rounded-md px-4 py-1 h-8 text-gray-800 font-roboto font-light"></input>
-                        <button onClick={() => handleGenerateKey()} class="font-roboto text-white font-light bg-blue-500 hover:bg-blue-400 rounded-md px-2 py-1 h-8 text-sm tracking-wide">Generate Key</button>
+                        <input onChange={(e) => setGeneratorKeyTitle(e.target.value)} id="key-title-input" class="bg-gray-100 flex-1 mr-2 rounded-md px-4 py-1 h-8 text-gray-800 font-roboto font-light shadow-sm"></input>
+                        <button onClick={() => handleGenerateKey()} class="font-roboto text-white font-light bg-blue-500 hover:bg-blue-400 rounded-md px-2 py-1 h-8 text-sm tracking-wide shadow-md">Generate Key</button>
                     </div>
                 </div>
             </div>

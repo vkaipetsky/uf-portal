@@ -73,15 +73,6 @@ function Header() {
             console.log('apiExtAdminQuery response: ', res);
         })
 
-        async function apiGatewayQuery() {
-            const apiResponse = await fetch('/api/test_api_gw/?accessToken=' + authState.accessToken.accessToken);
-            return apiResponse.json();
-        }
-
-        apiGatewayQuery().then((res) => {
-            console.log('apiGatewayQuery response: ', res);
-        })
-
         async function apiGatewayIrelandQuery() {
             const apiResponse = await fetch('/api/test_api_gw_ireland/?accessToken=' + authState.accessToken.accessToken);
             return apiResponse.json();

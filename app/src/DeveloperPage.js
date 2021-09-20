@@ -92,7 +92,7 @@ const DeveloperPage = () => {
         deleteKey().then((res) => {
             console.log('deleteKey response: ', res);
 
-            setSomeKeysGotDeleted(true);
+            setSomeKeysGotDeleted(true); // TODO: this won't cause a redraw for subsequent deletions...
             setShowDeleteWarning(false);
         })
     }

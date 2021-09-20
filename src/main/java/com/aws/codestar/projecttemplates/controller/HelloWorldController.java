@@ -31,34 +31,95 @@ public class HelloWorldController {
         return ResponseEntity.ok(createResponse(name));
     }
 
-    @RequestMapping(path = "ext/", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken) {
+    private ResponseEntity queryHost( String gateway, String endpoint, String accessToken ) {
         WebClient client = WebClient.create();
+        String remoteApiUrl = gateway + endpoint;
         String response = client.get()
-//              .uri("http://localhost:8081/")
-              .uri("https://api.unicorn-finance-protected.com/")
-              .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-              .exchange()
-              .block()
-              .bodyToMono(String.class)
-              .block();
-
-        return ResponseEntity.ok(createResponse(response));
-    }
-
-    @RequestMapping(path = "ext_protected/", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity externalProtectedAPIGetAuthenticated(@RequestParam String accessToken) {
-        WebClient client = WebClient.create();
-        String response = client.get()
-//                .uri("http://localhost:8081/restricted")
-                .uri("https://api.unicorn-finance-protected.com/restricted")
+                .uri(remoteApiUrl)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .exchange()
                 .block()
                 .bodyToMono(String.class)
                 .block();
 
-        return ResponseEntity.ok(createResponse(response));
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put( "remoteApiUrlQueried", remoteApiUrl );
+        jsonResponse.put( "responseReceived", response );
+
+        return ResponseEntity.ok(jsonResponse.toString());
+    }
+
+    @RequestMapping(path = "test_api_gw/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity testApiGateway(@RequestParam String accessToken) {
+        return queryHost(
+                "https://tntr978g25.execute-api.us-west-2.amazonaws.com",
+                "/api/duckssay",
+                accessToken
+        );
+    }
+
+    @RequestMapping(path = "test_api_gw_ireland/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity testApiGatewayIreland(@RequestParam String accessToken) {
+        return queryHost(
+                "https://evmv7npsa2.execute-api.eu-west-1.amazonaws.com",
+                "/",
+                accessToken
+        );
+    }
+
+    @RequestMapping(path = "test_api_gw_ireland_protected/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity testApiGatewayIrelandProtected(@RequestParam String accessToken) {
+        return queryHost(
+                "https://evmv7npsa2.execute-api.eu-west-1.amazonaws.com",
+                "/api/protected",
+                accessToken
+        );
+    }
+
+    @RequestMapping(path = "test_api_gw_ireland_admin/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity testApiGatewayIrelandAdmin(@RequestParam String accessToken) {
+        return queryHost(
+                "https://evmv7npsa2.execute-api.eu-west-1.amazonaws.com",
+                "/api/admin",
+                accessToken
+        );
+    }
+
+    @RequestMapping(path = "ext/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity externalAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
+        return queryHost(
+                remoteApiUrlForEnvironment(runtimeHostname),
+                "",
+                accessToken
+        );
+    }
+
+    @RequestMapping(path = "ext_admin/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity externalAdminAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
+        return queryHost(
+                remoteApiUrlForEnvironment(runtimeHostname),
+                "/admin",
+                accessToken
+        );
+    }
+
+    @RequestMapping(path = "ext_protected/", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity externalProtectedAPIGetAuthenticated(@RequestParam String accessToken, @RequestParam String runtimeHostname) {
+        return queryHost(
+                remoteApiUrlForEnvironment(runtimeHostname),
+                "/restricted",
+                accessToken
+        );
+    }
+
+    private String remoteApiUrlForEnvironment(String runtimeHostname) {
+        String remoteApiUrl = "internal-uf-behind-apigw-lb-680393014.eu-west-1.elb.amazonaws.com"; // this is only reachable from inside the AWS VPC
+        if (runtimeHostname.equals("localhost")) {
+//            remoteApiUrl = "http://localhost:8081"; // OAuth2 app running locally
+            remoteApiUrl = "http://54.247.156.88"; // Directly to the remote server
+        }
+
+        return remoteApiUrl;
     }
 
     private String createResponse(String name) {

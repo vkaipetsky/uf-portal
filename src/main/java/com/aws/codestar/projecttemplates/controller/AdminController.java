@@ -41,15 +41,46 @@ public class AdminController {
     }
 
     @GetMapping("/okta_apps")
-    public ApplicationList getKeys() {
-        return oktaClient.listApplications();
+    public ResponseEntity getKeys() {
+//        return oktaClient.listApplications();
+
+        WebClient client = WebClient.create();
+        String remoteApiUrl = oktaOrgUrl + "/oauth2/v1/clients?limit=200"; // TODO: implement pagination here
+        String response = client.get()
+                .uri(remoteApiUrl)
+                .header(HttpHeaders.AUTHORIZATION, "SSWS " + oktaApiKey)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .block()
+                .bodyToMono(String.class)
+                .block();
+
+        return ResponseEntity.ok(response);
     }
 
     @RequestMapping(path = "/clients/delete", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity deleteApp(@RequestParam String accessToken, @RequestParam String appIdToDelete) {
         String report = "deleteApp got called for id: " + appIdToDelete;
         System.out.println(report);
-        return ResponseEntity.ok("{\"appIdToDelete\":\""+appIdToDelete+"\", \"result\":\"deleted\"}");
+
+        WebClient client = WebClient.create();
+        String remoteApiUrl = oktaOrgUrl + "/oauth2/v1/clients/" + appIdToDelete;
+        String response = client.delete()
+                .uri(remoteApiUrl)
+                .header(HttpHeaders.AUTHORIZATION, "SSWS " + oktaApiKey)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .block()
+                .bodyToMono(String.class)
+                .block();
+
+        // and delete the app
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put( "remoteApiUrlQueried", remoteApiUrl );
+        jsonResponse.put( "responseReceived", response );
+
+        return ResponseEntity.ok(jsonResponse.toString());
     }
 
     @RequestMapping(path = "/clients/create", method = RequestMethod.POST, produces = "application/json")

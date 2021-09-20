@@ -25,14 +25,14 @@ const DeveloperPage = () => {
         {
             apiAppsData().then((res) => {
                 console.log('apiAppsData response: ', res);
-                console.log('response.currentPage.items: ', res.currentPage.items);
+                console.log('response.currentPage.items: ', res);
 
                 // Create the new keys object
                 let newKeys = {};
-                for (const appIndex in res.currentPage.items) {
-                    let curApp = res.currentPage.items[appIndex];
+                for (const appIndex in res) {
+                    let curApp = res[appIndex];
 
-                    newKeys[curApp.id] = curApp;
+                    newKeys[curApp.client_id] = curApp;
                 }
 
                 // Update the keys
@@ -45,7 +45,7 @@ const DeveloperPage = () => {
 
     const ApiKeyEntry = ({ apiKey }) => {
         const updateSelectedAndShowDelete = () => {
-            setSelectedApiKey(apiKey.id);
+            setSelectedApiKey(apiKey.client_id);
             setShowDeleteWarning(true);
         };
 
@@ -53,8 +53,8 @@ const DeveloperPage = () => {
             <li class="flex flex-row my-1 hover:bg-gray-200 px-2 py-4 text-gray-700 rounded-md font-roboto cursor-pointer">
                 <CopyToClipboard text={apiKey.key} onCopy={() => handleDisplayCopyMessage()}>
                     <div class="flex flex-row flex-1">
-                        <span class="flex-1">{apiKey.label}</span>
-                        <span class="flex-1">{apiKey.id}</span>
+                        <span class="flex-1">{apiKey.client_name}</span>
+                        <span class="flex-1">{apiKey.client_id}</span>
                     </div>
                 </CopyToClipboard>
                 <button onClick={() => updateSelectedAndShowDelete()} class="text-gray-600 hover:text-red-500"><TrashIcon /></button>

@@ -11,11 +11,11 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import PageNotFound from './PageNotFound';
 
 const oktaAuth = new OktaAuth({
-    issuer: 'https://dev-79177292.okta.com/oauth2/default',
-    clientId: '0oa1mg0wgxqX0q1iv5d7',
+    // issuer: 'https://dev-79177292.okta.com/oauth2/default',
+    // clientId: '0oa1mg0wgxqX0q1iv5d7',
 
-    // issuer: 'https://id.unicorn-finance-dev.com/oauth2/auszuppqsU0dhKv5B1d6',
-    // clientId: '0oa1dzdt3fporlKx61d7',
+    issuer: 'https://id.unicorn-finance-dev.com/oauth2/auszuppqsU0dhKv5B1d6',
+    clientId: '0oa1dzdt3fporlKx61d7',
 
     redirectUri: window.location.origin + '/callback'
 });

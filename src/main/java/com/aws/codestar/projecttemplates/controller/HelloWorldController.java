@@ -34,13 +34,17 @@ public class HelloWorldController {
     private ResponseEntity queryHost( String gateway, String endpoint, String accessToken ) {
         WebClient client = WebClient.create();
         String remoteApiUrl = gateway + endpoint;
+        String authHeader = "Bearer " + accessToken;
         String response = client.get()
                 .uri(remoteApiUrl)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, authHeader)
                 .exchange()
                 .block()
                 .bodyToMono(String.class)
                 .block();
+
+//        System.out.println("Querying remote API: " + remoteApiUrl);
+//        System.out.println("Auth header: " + authHeader);
 
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put( "remoteApiUrlQueried", remoteApiUrl );

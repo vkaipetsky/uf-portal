@@ -127,7 +127,7 @@ const DeveloperPage = () => {
     return (
         <div class="flex flex-col items-center w-screen min-h-screen">
             <div class="h-full w-full mt-24 p-24">
-                <h1 class="font-roboto font-black text-6xl text-gray-800">Developer</h1>
+                <h1 class="font-roboto font-black text-4xl text-gray-800">Developer</h1>
 
                 <div class="relative">
                     <div class="p-4 flex flex-col bg-gray-100 rounded-md mt-12 w-1/2 shadow-md relative z-10">

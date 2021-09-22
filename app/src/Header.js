@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
-import logo from './assets/logo.svg';
 import { ReactComponent as CloseIcon } from './assets/close.svg';
 import { ReactComponent as UserGroupIcon } from './assets/user-group.svg';
 import { ReactComponent as TerminalIcon } from './assets/terminal.svg';
-
+import logo from './assets/uf-logo-black.png';
 
 function Header() {
 
@@ -158,8 +157,8 @@ function Header() {
     };
 
     return (
-        <nav class="py-8 flex flex-row items-center justify-center fixed w-screen top-0 bg-inherit z-10" style={{ backdropFilter: 'blur(1px)' }}>
-            <Link to="/" class="absolute left-24 w-72"><img src={logo} alt="JP Morgan chase logo" /></Link>
+        <nav class="py-8 flex flex-row items-center justify-center fixed w-screen top-0 bg-inherit z-10" style={{backdropFilter: 'blur(1px)'}}>
+            <Link to="/" class="absolute left-2 w-36"><img src={logo} alt="Unicorn Finance logo" /></Link>
             <ul className="menu">
                 <li><HeaderLink to="/">Home</HeaderLink></li>
                 <li><HeaderLink to="/private">Restricted</HeaderLink></li>

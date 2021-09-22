@@ -42,6 +42,38 @@ const DeveloperPage = () => {
         [someKeysGotDeleted]
     );
 
+    function detectClientType(apiKey) {
+        if (apiKey.token_endpoint_auth_method === 'private_key_jwt') {
+            return 'JWT';
+        } else {
+            if (apiKey.token_endpoint_auth_method === 'client_secret_basic') {
+                return 'Basic';
+            }
+            else {
+                return '---';
+            }
+        }
+    }
+
+    function generateSecretForClient(apiKey) {
+        if (apiKey.token_endpoint_auth_method === 'private_key_jwt') {
+            const generatedSecret = 'Private Key:' + apiKey.secret;
+            // console.log('generateSecretForClient for JWT ' + apiKey.client_id + ': ' + generatedSecret);
+            return generatedSecret;
+        } else {
+            if (apiKey.token_endpoint_auth_method === 'client_secret_basic') {
+                const generatedSecret = apiKey.client_id + ':' + apiKey.secret;
+                // console.log('generateSecretForClient for Basic ' + apiKey.client_id + ': ' + generatedSecret);
+                return generatedSecret;
+            }
+            else {
+                return apiKey.client_id;
+            }
+        }
+
+        return apiKey.client_id;
+    }
+
     const ApiKeyEntry = ({ apiKey }) => {
         const updateSelectedAndShowDelete = () => {
             setSelectedApiKey(apiKey.client_id);
@@ -50,8 +82,9 @@ const DeveloperPage = () => {
 
         return (
             <li class="flex flex-row my-1 hover:bg-gray-200 px-2 py-4 text-gray-700 rounded-md font-roboto cursor-pointer">
-                <CopyToClipboard text={apiKey.key} onCopy={() => handleDisplayCopyMessage()}>
+                <CopyToClipboard text={generateSecretForClient(apiKey)} onCopy={() => handleDisplayCopyMessage()}>
                     <div class="flex flex-row flex-1">
+                        <span class="flex-1">{detectClientType(apiKey)}</span>
                         <span class="flex-1">{apiKey.client_name}</span>
                         <span class="flex-1">{apiKey.client_id}</span>
                     </div>
@@ -72,10 +105,25 @@ const DeveloperPage = () => {
     }
 
     const handleGenerateKey = () => {
-        const newApiKeys = Object.assign({}, apiKeys);
-        const key = uuidv4();
-        newApiKeys[key] = { name: generatorKeyTitle, key }
-        setApiKeys(newApiKeys);
+        async function createKey() {
+            // TODO: Use the actual token here
+            const urlToCreate = '/clients/create?accessToken=123&clientName=' + generatorKeyTitle;
+            console.log('handleGenerateKey calling: ' + urlToCreate)
+            const apiResponse = await fetch(urlToCreate, {method: 'POST'});
+            return apiResponse.json();
+        }
+
+        createKey().then((res) => {
+            console.log('createKey response: ', res);
+
+            setSomeKeysGotDeleted(true); // TODO: this won't cause a redraw for subsequent deletions...
+            setShowDeleteWarning(false);
+        })
+
+        // const newApiKeys = Object.assign({}, apiKeys);
+        // const key = uuidv4();
+        // newApiKeys[key] = { name: generatorKeyTitle, key }
+        // setApiKeys(newApiKeys);
     }
 
     const handleDeleteKey = (key) => {
@@ -129,7 +177,7 @@ const DeveloperPage = () => {
                 <h1 class="font-roboto font-black text-4xl text-gray-800">Developer</h1>
 
                 <div class="relative flex flex-row">
-                    <div class="p-4 flex flex-col bg-gray-100 rounded-md mt-12 w-1/2 shadow-md relative z-10">
+                    <div class="p-4 flex flex-col bg-gray-100 rounded-md mt-12 w-2/3 shadow-md relative z-10">
                         <DeleteConfirmationDialog />
                         <h2 class="font-roboto text-xl font-medium text-gray-800">My API Keys</h2>
                         <KeyCopiedMessage />

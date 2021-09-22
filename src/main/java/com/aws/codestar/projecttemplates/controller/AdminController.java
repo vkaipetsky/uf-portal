@@ -24,6 +24,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 @RestController
@@ -52,6 +53,8 @@ public class AdminController {
         public String clientSecret;
     }
 
+    HashMap<String, UnicornUser> generatedUsers = new HashMap<>();
+
     @GetMapping("/okta_apps")
     public ResponseEntity getKeys() {
 //        return oktaClient.listApplications();
@@ -67,7 +70,25 @@ public class AdminController {
                 .bodyToMono(String.class)
                 .block();
 
-        return ResponseEntity.ok(response);
+//        return ResponseEntity.ok(response);
+
+        JSONArray appsArray = new JSONArray(response);
+        JSONArray returnArray = new JSONArray();
+        for (int appIndex = 0;  appIndex < appsArray.length();  appIndex++) {
+            JSONObject curApp = appsArray.getJSONObject(appIndex);
+            String curClientId = curApp.getString("client_id");
+
+            // Check if this app is among our locally stored ones
+            for (UnicornUser storedUser: generatedUsers.values()) {
+                if (storedUser.clientId.equals(curClientId)) {
+                    curApp.put("secret", storedUser.clientSecret);
+                }
+            }
+
+            returnArray.put(curApp);
+        }
+
+        return ResponseEntity.ok(returnArray.toString());
     }
 
     @RequestMapping(path = "/clients/delete", method = RequestMethod.GET, produces = "application/json")
@@ -147,13 +168,21 @@ public class AdminController {
                 .bodyToMono(String.class)
                 .block();
 
-        // and assign the app
+        JSONObject jsonResponse = new JSONObject(response);
 
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put( "remoteApiUrlQueried", remoteApiUrl );
-        jsonResponse.put( "responseReceived", response );
+        // Cache this user locally
+        String clientId = jsonResponse.getString("client_id");
+        String clientSecret = jsonResponse.getString("client_secret");
+        UnicornUser newUser = new UnicornUser();
+        newUser.clientId = clientId;
+        newUser.clientSecret = clientSecret;
+        generatedUsers.put(clientId, newUser);
 
-        return ResponseEntity.ok(jsonResponse.toString());
+        JSONObject jsonRetVal = new JSONObject();
+        jsonRetVal.put( "remoteApiUrlQueried", remoteApiUrl );
+        jsonRetVal.put( "responseReceived", jsonResponse );
+
+        return ResponseEntity.ok(jsonRetVal.toString());
     }
 
     private static PrivateKey deserializePrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -310,7 +339,9 @@ public class AdminController {
 
         System.out.println("Okta responds with: "+response);
 
-        return ResponseEntity.ok("done");
+        JSONObject responseJSON = new JSONObject(response);
+
+        return ResponseEntity.ok(responseJSON.toString());
     }
 
     @RequestMapping(path = "/clients/create_jwks", method = RequestMethod.POST, produces = "application/json")

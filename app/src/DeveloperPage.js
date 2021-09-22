@@ -142,8 +142,8 @@ const DeveloperPage = () => {
                         <AddApiKeyButton />
                     </div>
                     <div class="ml-12 mt-12 flex flex-col items-center justify-center">
-                        <button onClick={() => console.log('basic cred')} class="px-4 py-2 bg-blue-500 hover:bg-blue-400 font-roboto shadow-md font-light rounded-full text-white">Create a client with Basic Credentials</button>
-                        <button onClick={() => console.log('jwt assert auth')} class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-400 font-roboto shadow-md font-light rounded-full text-white">Create a client with signed JWT assertion auth</button>
+                        <button onClick={() => console.log('basic cred')} class="px-4 py-2 bg-blue-500 hover:bg-blue-400 font-roboto shadow-md font-light rounded-full text-white flex flex-row items-center"><PlusIcon class="mr-1 h-4 items-center" />Create a client with Basic Credentials</button>
+                        <button onClick={() => console.log('jwt assert auth')} class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-400 font-roboto shadow-md font-light rounded-full text-white flex flex-row items-center"><PlusIcon class="mr-1 h-4 items-center" />Create a client with signed JWT assertion auth</button>
                     </div>
                     <div class={`absolute items-center transform transition animated opacity-0 duration-500 ${showKeyGenerator && 'translate-y-20 opacity-100'} bottom-4 w-2/5 flex flex-row p-2`}>
                         <label for="key-title-input" class="mr-2 font-roboto text-gray-600 font-light">Key title</label>

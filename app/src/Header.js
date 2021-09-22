@@ -27,6 +27,8 @@ function Header() {
         ? ''
         : <LoginButton onClick={login}>Login</LoginButton>
 
+    let showAdminHeaderLink = false;
+
     if (authState.isAuthenticated) {
         console.log('Okta authState: ', authState);
         console.log('oktaAuth: ', oktaAuth);
@@ -38,6 +40,23 @@ function Header() {
                 setUser(newUser);
             }
         })
+
+        function parseJwt (token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+
+        const userAccessToken = parseJwt(oktaAuth.getAccessToken());
+        console.log('access_token: ', userAccessToken);
+
+        if (userAccessToken.groups.includes('Admins')) {
+            showAdminHeaderLink = true;
+        }
 
         const runtimeHostname = window.location.hostname;
 
@@ -163,6 +182,7 @@ function Header() {
                 <li><HeaderLink to="/">Home</HeaderLink></li>
                 <li><HeaderLink to="/private">Restricted</HeaderLink></li>
                 <li><HeaderLink to="/developer">Developer</HeaderLink></li>
+                {showAdminHeaderLink && <li><HeaderLink to="/usermanagement">Admin</HeaderLink></li>}
             </ul>
 
             <div class="absolute right-24 flex items-center">

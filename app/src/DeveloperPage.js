@@ -21,24 +21,23 @@ const DeveloperPage = () => {
     }
 
     // When this component first mounts, this will get called
-    useEffect(() =>
-        {
-            apiAppsData().then((res) => {
-                console.log('apiAppsData response: ', res);
-                console.log('response.currentPage.items: ', res);
+    useEffect(() => {
+        apiAppsData().then((res) => {
+            console.log('apiAppsData response: ', res);
+            console.log('response.currentPage.items: ', res);
 
-                // Create the new keys object
-                let newKeys = {};
-                for (const appIndex in res) {
-                    let curApp = res[appIndex];
+            // Create the new keys object
+            let newKeys = {};
+            for (const appIndex in res) {
+                let curApp = res[appIndex];
 
-                    newKeys[curApp.client_id] = curApp;
-                }
+                newKeys[curApp.client_id] = curApp;
+            }
 
-                // Update the keys
-                setApiKeys(newKeys);
-            })
-        },
+            // Update the keys
+            setApiKeys(newKeys);
+        })
+    },
         // Dependencies
         [someKeysGotDeleted]
     );
@@ -83,7 +82,7 @@ const DeveloperPage = () => {
 
         async function deleteKey() {
             // TODO: Use the actual token here
-            const urlToDelete = '/clients/delete?accessToken=123&appIdToDelete='+key;
+            const urlToDelete = '/clients/delete?accessToken=123&appIdToDelete=' + key;
             console.log('handleDeleteKey calling: ' + urlToDelete)
             const apiResponse = await fetch(urlToDelete);
             return apiResponse.json();
@@ -104,7 +103,7 @@ const DeveloperPage = () => {
 
     const DeleteConfirmationDialog = () => {
         return (
-            <div class={`transition duration-300 p-4 flex flex-col bg-gray-100 rounded-md absolute -right-1/2 top-1/2 shadow-md ${showDeleteWarning ? 'opacity-100' : 'opacity-0'}`}>
+            <div class={`transition duration-300 p-4 flex flex-col bg-gray-100 rounded-md absolute -right-1/2 top-1/2 shadow-md ${showDeleteWarning ? 'opacity-100' : 'opacity-0 hidden'}`}>
                 <span class="font-roboto text-gray-700 font-light">
                     Are you sure you want to delete this API key?
                 </span>
@@ -129,7 +128,7 @@ const DeveloperPage = () => {
             <div class="h-full w-full mt-24 p-24">
                 <h1 class="font-roboto font-black text-4xl text-gray-800">Developer</h1>
 
-                <div class="relative">
+                <div class="relative flex flex-row">
                     <div class="p-4 flex flex-col bg-gray-100 rounded-md mt-12 w-1/2 shadow-md relative z-10">
                         <DeleteConfirmationDialog />
                         <h2 class="font-roboto text-xl font-medium text-gray-800">My API Keys</h2>
@@ -142,13 +141,16 @@ const DeveloperPage = () => {
                         </ul>
                         <AddApiKeyButton />
                     </div>
+                    <div class="ml-12 mt-12 flex flex-col items-center justify-center">
+                        <button onClick={() => console.log('basic cred')} class="px-4 py-2 bg-blue-500 hover:bg-blue-400 font-roboto shadow-md font-light rounded-full text-white">Create a client with Basic Credentials</button>
+                        <button onClick={() => console.log('jwt assert auth')} class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-400 font-roboto shadow-md font-light rounded-full text-white">Create a client with signed JWT assertion auth</button>
+                    </div>
                     <div class={`absolute items-center transform transition animated opacity-0 duration-500 ${showKeyGenerator && 'translate-y-20 opacity-100'} bottom-4 w-2/5 flex flex-row p-2`}>
                         <label for="key-title-input" class="mr-2 font-roboto text-gray-600 font-light">Key title</label>
                         <input onChange={(e) => setGeneratorKeyTitle(e.target.value)} id="key-title-input" class="bg-gray-100 flex-1 mr-2 rounded-md px-4 py-1 h-8 text-gray-800 font-roboto font-light shadow-sm"></input>
                         <button onClick={() => handleGenerateKey()} class="font-roboto text-white font-light bg-blue-500 hover:bg-blue-400 rounded-md px-2 py-1 h-8 text-sm tracking-wide shadow-md">Generate Key</button>
                     </div>
                 </div>
-
                 <UndrawDev class="w-1/4 h-1/4 absolute bottom-24 right-24 mb-4" />
             </div>
         </div>

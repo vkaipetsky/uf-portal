@@ -64,7 +64,7 @@ const DeveloperPage = () => {
             if (apiKey.token_endpoint_auth_method === 'client_secret_basic') {
                 const generatedSecret = apiKey.client_id + ':' + apiKey.secret;
                 // console.log('generateSecretForClient for Basic ' + apiKey.client_id + ': ' + generatedSecret);
-                return generatedSecret;
+                return btoa(generatedSecret);
             }
             else {
                 return apiKey.client_id;

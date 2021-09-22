@@ -1,34 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import inSyncImage from './assets/undraw_In_sync.svg';
-import undrawTeam from './assets/undraw_team.svg';
 import lockOpen from './assets/lock-open.svg';
 import lockClosed from './assets/lock-closed.svg';
-import Fade from 'react-reveal/Fade';
 
 function Home() {
-
-    const HeroText = ({ children }) => {
-        return <h1 class="text-8xl font-roboto text-left text-gray-800 m-12 font-black">{children}</h1>
-    }
 
     const HomeCard = ({ to, color, children, right}) => {
         return (
             <Link to={to}
-                class={`transition duration-500 ${right ? 'text-right' : 'text-left'} rounded-lg m-1 p-24 w-1/3 ${color ? color : 'bg-blue-500'} text-white font-bold text-4xl shadow-md hover:shadow-xl hover:opacity-80`}>
+                class={`transition duration-500 ${right ? 'text-right' : 'text-left'} rounded-lg m-1 p-4 w-1/2 ${color ? color : 'bg-blue-500'} text-white font-bold text-2xl shadow-md hover:shadow-xl hover:opacity-80`}>
                 {children}</Link>
+        );
+    };
+
+    const ExternalLinkCard = ({ to, color, children, right}) => {
+        return (
+            <a rel="noopener noreferrer" href={to} target="_blank"
+               class={`transition duration-500 text-center rounded-lg m-1 p-4 w-1/2 ${color ? color : 'bg-blue-500'} text-white font-bold text-2xl shadow-md hover:shadow-xl hover:opacity-80`}
+            >{children}</a>
         );
     };
 
     return (
         <div class="flex flex-col items-center w-screen mt-12">
             <section class="min-h-screen w-full items-center justify-center flex flex-col mt-12">
-                <div class="flex-1">
-                    <Fade bottom>
-                        <HeroText>Unicorn Finance <br /> Dev Portal</HeroText>
-                    </Fade>
-                    <img src={inSyncImage} />
-                </div>
+                <ExternalLinkCard to="https://id.unicorn-finance-dev.com/home/jpm-ms-dev_acmeinvestments_1/0oa1dr26qbkFgI0ym1d7/aln1ds4vxfA4EjGA91d7" color="bg-green-500" right>Outbound SSO to ACME Investments</ExternalLinkCard>
                 <div class="flex flex-col">
                     <div class="flex flex-row mx-48 justify-center items-center my-24">
                         <HomeCard to="/private">Visit a sample Restricted Page</HomeCard>
@@ -46,11 +42,8 @@ function Home() {
                                     <img src={lockClosed} class="w-5 mr-4" alt="a closed lock" />
                                     Unauthenticated users will be redirected to the<strong class="tracking-wide text-blue-500 font-bold ml-1">OKTA login portal </strong>
                                 </span>
-                            </span></p>
-                    </div>
-                    <div class="flex flex-row mx-48 justify-center items-center">
-                        <img src={undrawTeam} class="flex-1 h-1/2" />
-                        <HomeCard to="/about" color="bg-pink-500" right>About us</HomeCard>
+                            </span>
+                        </p>
                     </div>
                 </div>
             </section>
